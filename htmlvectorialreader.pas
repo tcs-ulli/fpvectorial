@@ -14,12 +14,12 @@ interface
 
 uses
   Classes, SysUtils, math, contnrs,
-  fpimage, fpcanvas, laz2_xmlread, laz2_dom, fgl,
+  fpimage, fpcanvas, xmlread, dom, fgl,
   // image data formats
   fpreadpng,
   // HTML can contain SVG
   svgvectorialreader,
-  fpvectorial, fpvutils, lazutf8, TypInfo;
+  fpvectorial, fpvutils, TypInfo;
 
 type
   { TvHTMLVectorialReader }

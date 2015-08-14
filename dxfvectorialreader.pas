@@ -35,8 +35,9 @@ interface
 uses
   Classes, SysUtils, Math,
   fpcanvas, fpimage,
-  fpvectorial, fpvutils,
-  lconvencoding;
+  fpvectorial, fpvutils
+  //,lconvencoding
+  ;
 
 type
   TDXFToken = class;
@@ -2173,7 +2174,7 @@ begin
     Exit;
   end;
 
-  Result := ConvertEncoding(AStr, ENCODING, 'UTF-8');
+  Result := AStr;//ConvertEncoding(AStr, ENCODING, 'UTF-8');
 end;
 
 function TvDXFVectorialReader.DXFColorIndexToFPColor(AColorIndex: Integer): TFPColor;

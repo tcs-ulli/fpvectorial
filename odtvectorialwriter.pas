@@ -56,7 +56,7 @@ uses
   Classes, SysUtils,
   zipper, zstream, {NOTE: might require zipper from FPC 2.6.2+ }
   fpimage, fpcanvas,
-  fpvectorial, fpvutils, lazutf8;
+  fpvectorial, fpvutils;
 
 type
 

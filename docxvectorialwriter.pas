@@ -93,7 +93,7 @@ Uses
   Classes, SysUtils,
   zipper, {NOTE: might require zipper from FPC 2.6.2+ }
   fpimage, fpcanvas,
-  fpvectorial, fpvutils, lazutf8, Math;
+  fpvectorial, fpvutils, Math;
 
 Type
   TIndentOption = (indInc, indDec, indNone);

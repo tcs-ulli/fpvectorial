@@ -15,7 +15,7 @@ unit fpvectorial;
   {$mode objfpc}{$h+}
 {$endif}
 
-{$define USE_LCL_CANVAS}
+{.$define USE_LCL_CANVAS}
 {$ifdef USE_LCL_CANVAS}
   {$define USE_CANVAS_CLIP_REGION}
   {.$define DEBUG_CANVAS_CLIP_REGION}
@@ -23,7 +23,7 @@ unit fpvectorial;
 {.$define FPVECTORIAL_DEBUG_DIMENSIONS}
 {.$define FPVECTORIAL_TOCANVAS_DEBUG}
 {.$define FPVECTORIAL_DEBUG_BLOCKS}
-{$define FPVECTORIAL_AUTOFIT_DEBUG}
+{.$define FPVECTORIAL_AUTOFIT_DEBUG}
 
 interface
 
@@ -32,11 +32,11 @@ uses
   // FCL-Image
   fpcanvas, fpimage, fpwritebmp,
   // lazutils
-  laz2_dom,
+  dom
   // LCL
-  lazutf8
+  //lazutf8
   {$ifdef USE_LCL_CANVAS}
-  , Graphics, LCLIntf, LCLType, intfgraphics, graphtype
+  //, Graphics, LCLIntf, LCLType, intfgraphics, graphtype
   {$endif}
   ;
 
@@ -4121,13 +4121,13 @@ begin
       // Arc draws counterclockwise
       if ADoDraw and Cur2DArcSegment.ClockwiseArcFlag then
       begin
-        ACanvas.Arc(
+        ADest.Arc(
           EllipseRect.Left, EllipseRect.Top, EllipseRect.Right, EllipseRect.Bottom,
           CoordX4, CoordY4, CoordX, CoordY);
       end
       else if ADoDraw then
       begin
-        ACanvas.Arc(
+        ADest.Arc(
           EllipseRect.Left, EllipseRect.Top, EllipseRect.Right, EllipseRect.Bottom,
           CoordX, CoordY, CoordX4, CoordY4);
       end;
@@ -4316,14 +4316,14 @@ begin
   lHeight := 0;
   ARight := ALeft;
   ABottom := ATop;
-  if (ADest = nil) or (not (ADest is TCanvas)) then Exit;
+  if (ADest = nil) {$ifdef USE_LCL_CANVAS}or (not (ADest is TCanvas)){$ENDIF} then Exit;
 
   for i := 0 to Value.Count-1 do
   begin
     lText := Value.Strings[i];
-    lSize := ACanvas.TextExtent(lText);
+    lSize := ADest.TextExtent(lText);
     lWidth := Max(lWidth, lSize.cx);
-    lSize := ACanvas.TextExtent(Str_Line_Height_Tester);
+    lSize := ADest.TextExtent(Str_Line_Height_Tester);
     lHeight := lHeight + lSize.cy + 2;
   end;
 
@@ -4353,10 +4353,10 @@ var
   XAnchorAdjustment: Integer;
   lLongestLine, lLineWidth, lFontSizePx: Integer;
   lText: string;
-  {$ifdef USE_LCL_CANVAS}
-  ACanvas: TCanvas absolute ADest;
   lTextSize: TSize;
   lTextWidth: Integer;
+  {$ifdef USE_LCL_CANVAS}
+  ACanvas: TCanvas absolute ADest;
   {$endif}
 begin
   lText := Value.Text + Format(' F=%d', [ADest.Font.Size]); // for debugging
@@ -4372,7 +4372,7 @@ begin
   lLongestLine := 0;
   for i := 0 to Value.Count - 1 do
   begin
-    lLineWidth := ACanvas.TextWidth(Value.Strings[i]);
+    lLineWidth := ADest.TextWidth(Value.Strings[i]);
     if lLineWidth > lLongestLine then
       lLongestLine := lLineWidth;
   end;
@@ -4407,9 +4407,9 @@ begin
     //lText := lText + Format(' F=%d', [ADest.Font.Size]); // for debugging
 
     CalcEntityCanvasMinMaxXY(ARenderInfo, Render_NextText_X, Round(LowerDim.Y));
-    lTextSize := ACanvas.TextExtent(lText);
+    lTextSize := ADest.TextExtent(lText);
     lTextWidth := lTextSize.cx;
-    lTextSize := ACanvas.TextExtent(Str_Line_Height_Tester);
+    lTextSize := ADest.TextExtent(Str_Line_Height_Tester);
     CalcEntityCanvasMinMaxXY(ARenderInfo, Render_NextText_X + lTextWidth,
       Round(LowerDim.Y)+lTextSize.cy);
 
@@ -4504,6 +4504,7 @@ begin
   Path.NextWalk(0, lX, lY, lTangentAngle);
 
   // render each character separately
+  {$ifdef USE_LCL_CANVAS}
   for i := 0 to UTF8Length(lText)-1 do
   begin
     lUTF8Char := UTF8Copy(lText, i+1, 1);
@@ -4518,6 +4519,22 @@ begin
     lCharLen := ADest.TextWidth(lUTF8Char);
     Path.NextWalk(lCharLen, lX, lY, lTangentAngle);
   end;
+  {$ELSE}
+  for i := 0 to Length(lText)-1 do
+  begin
+    lUTF8Char := Copy(lText, i+1, 1);
+    ADest.Font.Orientation := Round(Math.radtodeg(lTangentAngle)*10);
+
+    // Without adjustment the text is down bellow the path, but we want it on top of it
+    {lTextHeight := Abs(AMulY) * ADest.TextHeight(lUTF8Char);
+    lX := lX - Sin(Pi / 2 - lTangentAngle) * lTextHeight;
+    lY := lY + Cos(Pi / 2 - lTangentAngle) * lTextHeight;}
+
+    ADest.TextOut(CoordToCanvasX(lX), CoordToCanvasY(lY), lUTF8Char);
+    lCharLen := ADest.TextWidth(lUTF8Char);
+    Path.NextWalk(lCharLen, lX, lY, lTangentAngle);
+  end;
+  {$ENDIF}
 end;
 
 function TvCurvedText.GenerateDebugTree(ADestRoutine: TvDebugAddItemProc;
@@ -5173,7 +5190,7 @@ begin
   //ADest.Line(CoordToCanvasX(BaseRight.X), CoordToCanvasY(BaseRight.Y), CoordToCanvasX(DimensionRight.X), CoordToCanvasY(DimensionRight.Y));
 
   // Now the arc
-  ALCLDest.Arc(
+  ADest.Arc(
     CoordToCanvasX(BaseLeft.X - ArcRadius), CoordToCanvasY(BaseLeft.Y - ArcRadius),
     CoordToCanvasX(BaseLeft.X + ArcRadius), CoordToCanvasY(BaseLeft.Y + ArcRadius),
     CoordToCanvasX(DimensionRight.X), CoordToCanvasY(DimensionRight.Y),
@@ -5540,7 +5557,7 @@ var
   lLineHeight: Integer;
 begin
   if ADest <> nil then
-    lLineHeight := TCanvas(ADest).TextHeight(STR_FPVECTORIAL_TEXT_HEIGHT_SAMPLE) + 2
+    lLineHeight := ADest.TextHeight(STR_FPVECTORIAL_TEXT_HEIGHT_SAMPLE) + 2
   else
     lLineHeight := 15;
 
@@ -5578,8 +5595,8 @@ begin
   lText := AsText;
   if lText <> '' then
   begin
-    if ADest = nil then Result := 10 * UTF8Length(lText)
-    else Result := TCanvas(ADest).TextWidth(lText);
+    if ADest = nil then Result := 10 * Length(lText)
+    else Result := ADest.TextWidth(lText);
   end;
 
   case Kind of
@@ -6130,7 +6147,7 @@ var
   lElement: TvFormulaElement;
 begin
   if ADest <> nil then
-    Result := TCanvas(ADest).TextHeight(STR_FPVECTORIAL_TEXT_HEIGHT_SAMPLE) + 2
+    Result := ADest.TextHeight(STR_FPVECTORIAL_TEXT_HEIGHT_SAMPLE) + 2
   else
     Result := 15;
 
@@ -6212,7 +6229,7 @@ begin
   ATop := Y;
   ARight := CalculateWidth(ADest);
   if ADest = nil then ABottom := CalculateHeight(ADest) * 15
-  else ABottom := CalculateHeight(ADest) * TCanvas(ADest).TextHeight('Źç');
+  else ABottom := CalculateHeight(ADest) * ADest.TextHeight('Źç');
   ARight := X + ARight;
   ABottom := Y + ABottom;
 end;
@@ -7074,7 +7091,7 @@ var
   i: Integer;
   lCurEntity: TvEntity;
   lLeft, lTop, lRight, lBottom: Double;
-  lBmp: TBitmap;
+  lBmp: TFPCustomCanvas;
 begin
   MinX := 0;
   MinY := 0;
@@ -7082,11 +7099,11 @@ begin
   MaxX := 0;
   MaxY := 0;
   MaxZ := 0;
-  lBmp := TBitmap.Create;
+  lBmp := TFPCustomCanvas.Create;
   for i := 0 to GetEntitiesCount() -1 do
   begin
     lCurEntity := GetEntity(i);
-    lCurEntity.CalculateBoundingBox(lBmp.Canvas, lLeft, lTop, lRight, lBottom);
+    lCurEntity.CalculateBoundingBox(lBmp, lLeft, lTop, lRight, lBottom);
     MinX := Min(MinX, lLeft);
     MinY := Min(MinY, lTop);
     MaxX := Max(MaxX, lRight);
@@ -8740,7 +8757,7 @@ var
   lContentNode: TDOMNode;
 begin
   Result := '';
-
+{
   for lContentNode in ANode.GetEnumeratorAllChildren() do
   begin
     if lContentNode is TDOMText then
@@ -8757,9 +8774,9 @@ begin
     end
     else
       lNodeTextTmp := lContentNode.NodeName;
-
     Result := Result + lNodeTextTmp;
   end;
+  }
 end;
 
 class function TvCustomVectorialReader.RemoveLineEndingsAndTrim(AStr: string): string;

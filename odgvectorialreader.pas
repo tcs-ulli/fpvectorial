@@ -52,7 +52,9 @@ uses
   zipper, {NOTE: might require zipper from FPC 2.6.2+ }
   xmlread, DOM, AVL_Tree,
   fpimage, fpcanvas, fgl,
-  fpvectorial, fpvutils, lazutf8;
+  fpvectorial, fpvutils
+  //, lazutf8
+  ;
 
 type
   TDoubleArray = array of Double;

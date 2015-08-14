@@ -13,6 +13,7 @@ unit rawvectorialreadwrite;
 {$endif}
 
 interface
+{$IFDEF LCL}
 
 uses
   Classes, SysUtils, dateutils,
@@ -34,8 +35,9 @@ type
 var
   RAW_IMAGE_WIDTH, RAW_IMAGE_HEIGHT: Integer;
 
+{$ENDIF}
 implementation
-
+{$IFDEF LCL}
 { TvRAWVectorialReader }
 
 procedure TvRAWVectorialReader.ReadFromStream(AStream: TStream;
@@ -75,6 +77,6 @@ initialization
   RAW_IMAGE_WIDTH := 1024;
   RAW_IMAGE_HEIGHT := 1024;
   RegisterVectorialReader(TvRAWVectorialReader, vfRAW);
-
+{$ENDIF}
 end.
 

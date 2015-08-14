@@ -11,7 +11,7 @@ AUTHORS: Felipe Monteiro de Carvalho
 }
 unit fpvutils;
 
-{$define USE_LCL_CANVAS}
+{.$define USE_LCL_CANVAS}
 {.$define FPVECTORIAL_BEZIERTOPOINTS_DEBUG}
 {.$define FPVECTORIAL_DEFLATE_DEBUG}
 
@@ -489,8 +489,6 @@ begin
   AScaleY := AD;
 end;
 
-{$ifdef USE_LCL_CANVAS}
-
 procedure InvertMatrixOperations(var ATranslateX, ATranslateY, AScaleX,
   AScaleY, ASkewX, ASkewY, ARotate: Double);
 begin
@@ -728,6 +726,8 @@ begin
     FPVUDebugOutCallback(FPVDebugBuffer + AStr);
   FPVDebugBuffer := '';
 end;
+
+{$ifdef USE_LCL_CANVAS}
 
 function ConvertPathToRegion(APath: TPath; ADestX, ADestY: Integer; AMulX, AMulY: Double): HRGN;
 var
