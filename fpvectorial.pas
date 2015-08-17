@@ -34,9 +34,9 @@ uses
   // lazutils
   dom
   // LCL
-  //lazutf8
   {$ifdef USE_LCL_CANVAS}
-  //, Graphics, LCLIntf, LCLType, intfgraphics, graphtype
+  , lazutf8
+  , Graphics, LCLIntf, LCLType, intfgraphics, graphtype
   {$endif}
   ;
 
@@ -4361,6 +4361,10 @@ var
 begin
   lText := Value.Text + Format(' F=%d', [ADest.Font.Size]); // for debugging
   inherited Render(ADest, ARenderInfo, ADestX, ADestY, AMulX, AMulY, ADoDraw);
+  {$ifndef LCL}
+  //TODO:implement Font support without LCL
+  exit;
+  {$endif}
 
   InitializeRenderInfo(ARenderInfo);
 
@@ -7807,7 +7811,12 @@ begin
     CurEntity := GetEntity(i);
 
     RenderInfo.BackgroundColor := BackgroundColor;
+    try
     CurEntity.Render(ADest, RenderInfo, ADestX, ADestY, AMulX, AMulY);
+
+    except
+      writeln(Format('[Path] ID=%d', [i]));
+    end;
   end;
 
   {$ifdef FPVECTORIAL_TOCANVAS_DEBUG}
