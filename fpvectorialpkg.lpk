@@ -10,7 +10,7 @@
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="21">
+    <Files Count="22">
       <Item1>
         <Filename Value="fpvectorial.pas"/>
         <UnitName Value="fpvectorial"/>
@@ -95,6 +95,10 @@
         <Filename Value="htmlvectorialreader.pas"/>
         <UnitName Value="htmlvectorialreader"/>
       </Item21>
+      <Item22>
+        <Filename Value="pdfvectorialreader.pas"/>
+        <UnitName Value="pdfvectorialreader"/>
+      </Item22>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>
@@ -108,5 +112,8 @@
     <PublishOptions>
       <Version Value="2"/>
     </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
   </Package>
 </CONFIG>

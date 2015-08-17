@@ -18,7 +18,7 @@ type
     close_path_y: String;
     cm_a, cm_b, cm_c, cm_d, cm_e, cm_f: Real; // coordinate spaces constants
     function StringToFloat(AStr: string): Double;
-    function generate(c: Command; AData: TvVectorialDocument): String;
+    function generate(c: Command; AData: TvVectorialPage): String;
     function convert(x: String; y: String; Axis: Char): String;
     function startMachine(): String;
     function endMachine(): String;
@@ -35,7 +35,7 @@ begin
   else Result := StrToFloat(AStr, FCommaSeparator);
 end;
 
-function AnSemantico.generate(c: Command; AData: TvVectorialDocument): String;
+function AnSemantico.generate(c: Command; AData: TvVectorialPage): String;
 var
   enter_line : String;
 begin

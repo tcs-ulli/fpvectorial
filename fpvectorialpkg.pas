@@ -13,7 +13,7 @@ uses
   lazvectorialreader, mathmlvectorialreader, odgvectorialreader, 
   rawvectorialreadwrite, svgvectorialreader, svgvectorialwriter, 
   svgzvectorialreader, odtvectorialwriter, docxvectorialwriter, 
-  htmlvectorialreader, LazarusPackageIntf;
+  htmlvectorialreader, pdfvectorialreader, LazarusPackageIntf;
 
 implementation
 
