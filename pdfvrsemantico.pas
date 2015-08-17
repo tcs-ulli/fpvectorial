@@ -121,9 +121,11 @@ begin
     {$endif}
     //Result:='G01' + ' ' + 'X' + c.cord_x + ' ' +  'Y' + c.cord_y + enter_line
     //       +'G01 Z0 // Sobe a cabeça de gravação' + enter_line;
-
-    AData.AddLineToPath(StringToFloat(c.cord_x), StringToFloat(c.cord_y));
-    AData.EndPath();
+    if (c.cord_x<>'') and (c.cord_y<>'') then
+      begin
+        AData.AddLineToPath(StringToFloat(c.cord_x), StringToFloat(c.cord_y));
+        AData.EndPath();
+      end;
   end;
   cc_c_BEZIER_TO_X_Y_USING_X2_Y2_AND_X3_Y3: // command c
   begin
