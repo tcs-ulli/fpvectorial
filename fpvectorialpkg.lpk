@@ -9,9 +9,6 @@
       <SearchPaths>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
-      <Other>
-        <CustomOptions Value="-dUSE_LCL_CANVAS"/>
-      </Other>
     </CompilerOptions>
     <Files Count="22">
       <Item1>

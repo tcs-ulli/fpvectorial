@@ -684,7 +684,7 @@ begin
     begin
       ADest.AssignPen(lCurStyle.Pen);
       if ADest is TvEntityWithPenAndBrush then
-        TvEntityWithPenAndBrush(ADest).AssignBrush(lCurStyle.Brush);
+        TvEntityWithPenAndBrush(ADest).AssignBrush(@lCurStyle.Brush);
 
       Exit;
     end;
