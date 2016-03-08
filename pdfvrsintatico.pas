@@ -450,8 +450,8 @@ begin
              else if ((t.token_string = 'W') or (t.token_string = 'W*')) then
                   begin
                       Estado := 13; // symbolic state
-                      raise Exception.Create('ERROR: Clipping nao eh suportado.');
-                      Halt(1);
+                      //raise Exception.Create('ERROR: Clipping nao eh suportado.');
+                      //Halt(1);
                   end
              else
                    begin

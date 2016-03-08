@@ -4017,7 +4017,7 @@ begin
     begin
       lx := ARect.Left + i;
       ly := ARect.Top + j;
-      {$IFDEF LCL}
+      {$IFDEF USE_LCL_CANVAS}
       if not IsPointInPolygon(lx, ly, APoints) then Continue;
       {$ENDIF}
 

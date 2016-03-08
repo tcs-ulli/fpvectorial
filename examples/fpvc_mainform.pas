@@ -38,8 +38,8 @@ var
 implementation
 
 uses
-  fpvectorial, cdrvectorialreader, svgvectorialwriter, //pdfvectorialreader,
-  fpvtocanvas;
+  fpvectorial, cdrvectorialreader, svgvectorialwriter, pdfvectorialreader,
+  fpvtocanvas,dxfvectorialreader;
 
 {$R *.lfm}
 
@@ -53,13 +53,15 @@ end;
 procedure TformVectorialConverter.buttonVisualizeClick(Sender: TObject);
 var
   Vec: TvVectorialDocument;
+  lFormat: TvVectorialFormat;
 begin
   // First check the in input
   if not CheckInput() then Exit;
 
   Vec := TvVectorialDocument.Create;
   try
-    Vec.ReadFromFile(editInput.FileName, vfPDF);
+    lFormat := TvVectorialDocument.GetFormatFromExtension(editInput.FileName);
+    Vec.ReadFromFile(editInput.FileName, lFormat);
     imagePreview.Canvas.Brush.Color := clWhite;
     imagePreview.Canvas.FillRect(0, 0, imagePreview.Width, imagePreview.Height);
     DrawFPVectorialToCanvas(Vec.GetPageAsVectorial(0), imagePreview.Canvas);
