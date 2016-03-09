@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, OpenGLContext, Forms, Controls, Graphics,
   Dialogs, EditBtn, StdCtrls, ComCtrls, fpvectorial, gl, glu, FPimage,
-  Math, lasvectorialreader;
+  Math, lasvectorialreader,dxfvectorialreader;
 
 type
 

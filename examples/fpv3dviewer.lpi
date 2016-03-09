@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
     <Version Value="9"/>
@@ -44,14 +44,13 @@
       <Unit0>
         <Filename Value="fpv3dviewer.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="fpv3dviewer"/>
       </Unit0>
       <Unit1>
         <Filename Value="fpv3d_mainform.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="formFPV3D"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="fpv3d_mainform"/>
       </Unit1>
     </Units>
   </ProjectOptions>
@@ -65,12 +64,6 @@
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
-    <Other>
-      <CompilerMessages>
-        <MsgFileName Value=""/>
-      </CompilerMessages>
-      <CompilerPath Value="$(CompPath)"/>
-    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">
